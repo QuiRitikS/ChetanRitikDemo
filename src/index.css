@@ -23,7 +23,7 @@ code {
   width: 400px;
   height: 400px;
   border-radius: 10px;
-  background-color: rgb(139, 139, 255);
+  background-color: rgb(14 14 161);
 }
 .error-el{
   margin:0px;
@@ -46,7 +46,7 @@ code {
   width: 400px;
   height: 00px;
   border-radius: 10px;
-  background-color: rgb(139, 139, 255);
+  background-color: rgb(14 14 161);
 }
 .form-heading{
   font-weight: 700;
@@ -170,4 +170,7 @@ code {
   width: 170px;
   height: auto;
   cursor: pointer;
+}
+.error-el{
+  color:red;
 }

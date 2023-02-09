@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import validator from "validator";
 
-const LoginForm = () => {
+const LoginForm = (props) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Entry, setEntry] = useState("");
   const [error, setError] = useState("");
-
   const submitForm = async (e) => {
     e.preventDefault();
     setError({});
@@ -27,6 +28,14 @@ const LoginForm = () => {
         console.log(Entry);
         setEmail("");
         setPassword("");
+        props.onLoginData(newEntry);
+        if (email === "ritik@gmail.com") {
+          navigate("/Admin");
+        } else if (email === "owner@gmail.com") {
+          navigate("/Owner");
+        } else {
+          alert("Error 404");
+        }
       } else {
         setError((error) => ({
           ...error,
@@ -36,53 +45,31 @@ const LoginForm = () => {
     } else {
       setError((error) => ({ ...error, email: "Valid Email is Required" }));
     }
-
-    try {
-      const response = await fetch("/api/login/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      setError(error.message);
-    }
-
-    if (data) {
-      switch (data.role) {
-        case "Tenant Admin":
-          return <AdminDashboard />;
-        case "Owner":
-          return <OwnerDashboard />;
-        case "Contributor":
-          return <ContributorDashboard />;
-        case "Viewer":
-          return <ViewerDashboard />;
-        default:
-          return <p>Invalid role</p>;
-      }
-    }
-    const AdminDashboard = () => (<div><h1>Welcome Admin!</h1><p>This is your dashboard</p></div>);
-
-    const OwnerDashboard = () => (<div><h1>Welcome Owner!</h1><p>This is your dashboard</p></div>);
-
-    const ContributorDashboard = () => (<div><h1>Welcome Contributor!</h1><p>This is your dashboard</p></div>)
-
-    const ViewerDashboard = () => (<div><h1>Welcome Viewer!</h1><p>This is your dashboard</p></div>)
+    // Code For API
+    // try {
+    //   const response = await fetch("/api/login/", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ email, password }),
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error(response.statusText);
+    //   }
+    //   const data = await response.json();
+        // if (data.email === "ritik@gmail.com") {
+        //   navigate("/Admin");
+        // } else if (data.email === "owner@gmail.com") {
+        //   navigate("/Owner");
+        // } else {
+        //   navigate("/Error")
+        // }
+    // } catch (error) {
+    //   setError(error.message);
+    // }
   };
-
   return (
     <>
-      <form
-        className="loginform-card"
-        action=""
-        method="POST"
-        onSubmit={submitForm}
-      >
+      <form className="loginform-card" action="" method="POST">
         <h2 className="form-heading">Login</h2>
         <div className="input-el">
           <label htmlFor="email">Email</label>
@@ -115,6 +102,7 @@ const LoginForm = () => {
           className="login-btn"
           type="submit"
           disabled={!email || !password}
+          onClick={submitForm}
         >
           Login
         </button>

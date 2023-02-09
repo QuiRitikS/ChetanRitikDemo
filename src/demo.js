@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 
 const LoginForm = () => {
- const [email, setEmail] = useState('');
- const [password, setPassword] = useState('');
+//  const [email, setEmail] = useState('');
+//  const [password, setPassword] = useState('');
+const [formData, setFormData ] = {
+  emai
+}
  const [error, setError] = useState('');
 
  const handleSubmit = async (event) => {
